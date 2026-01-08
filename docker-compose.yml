@@ -1,0 +1,60 @@
+
+# docker-compose.yml
+version: '3.8'
+
+# 1. 定义一个专属的Docker网络，所有服务都接入它
+networks:
+  ros2_net:
+    driver: bridge
+
+# 2. 定义三个服务（即三个容器）
+services:
+  # 服务二：发现服务（依赖接口层）
+  discovery-server:
+    build: 
+      context: .
+      dockerfile: src/chat_server/Dockerfile
+    image: local/discovery-server:latest
+    container_name: discovery_server
+    environment:
+      - ROS_DOMAIN_ID=0
+    networks:
+      - ros2_net
+    # 服务启动后，在容器内执行启动命令
+    #command: ["bash", "-c", "source /ros_ws/install/setup.bash && ros2 run chat_server discovery_server"]
+    command: ["bash"]
+
+  # 服务三：聊天节点（同样依赖接口层，与发现服务并列）
+  chat-node-alice:
+    build: 
+      context: .
+      dockerfile: src/chat_node/Dockerfile
+    image: local/chat-node:latest
+    container_name: chat_alice
+    depends_on:
+      - discovery-server # 也依赖发现服务，确保server先启动
+    environment:
+      - ROS_DOMAIN_ID=0
+      - NODE_NAME=Alice
+      # 关键：告诉节点，发现服务器在名为‘discovery-server’的主机上
+      - ROS_DISCOVERY_SERVER=discovery-server:11811
+    networks:
+      - ros2_net
+    command: ["bash"]
+      #command: ["bash", "-c", "source /ros_ws/install/setup.bash && ros2 run chat_node chat_node --ros-args -p node_name:=${NODE_NAME}"]
+
+  # 你可以轻松扩展更多节点，例如Bob
+  # chat-node-bob:
+  #   build: ./chat_node
+  #   image: local/chat-node:latest # 重用同一个节点镜像
+  #   container_name: chat_bob
+  #   depends_on:
+  #     - chat-interfaces
+  #     - discovery-server
+  #   environment:
+  #     - ROS_DOMAIN_ID=0
+  #     - NODE_NAME=Bob
+  #     - ROS_DISCOVERY_SERVER=discovery-server:11811
+  #   networks:
+  #     - ros2_net
+  #   command: ["bash", "-c", "source /ros_ws/install/setup.bash && ros2 run chat_node chat_node --ros-args -p node_name:=${NODE_NAME}"]
