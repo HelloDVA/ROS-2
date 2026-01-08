@@ -73,14 +73,16 @@ ROS函数：订阅注册方法，接收消息并处理。
 处理获取所有节点请求：HandleGetNodes
 
 定时清理超时节点：CheckNodes
+
 成员变量
 存储节点的结构：unordered_map
 并行控制：mutex
+清理定时器：Timer
 ```
 
 
 
-##### 监控节点模块
+##### 测试结果
 
 
 
