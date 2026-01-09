@@ -15,8 +15,6 @@ topic发布消息
 terminal界面支持，包含查询命令、退出命令、输入发送消息、@私聊功能。
 ```
 
-
-
 #### 架构设计
 
 ```
@@ -32,11 +30,9 @@ terminal界面支持，包含查询命令、退出命令、输入发送消息、
 可扩展性：轻松添加更多机器人节点
 ```
 
-
-
 #### 模块实现
 
-**聊天节点**：
+**聊天节点**
 
 ```
 成员函数
@@ -63,9 +59,7 @@ ROS函数：订阅注册方法，接收消息并处理。
 心跳定时器：Timer
 ```
 
-
-
-##### 发现服务模块
+**发现服务模块**
 
 ```
 成员函数
@@ -80,9 +74,32 @@ ROS函数：订阅注册方法，接收消息并处理。
 清理定时器：Timer
 ```
 
+#### 测试结果
 
+**节点登陆测试**
 
-##### 测试结果
+![A节点登陆](https://github.com/HelloDVA/ROS-2/blob/main/test1-2.png)
 
+![B节点登陆](https://github.com/HelloDVA/ROS-2/blob/main/test1-3.png)
 
+![服务节点](https://github.com/HelloDVA/ROS-2/blob/main/test1-2.png)
 
+**群聊消息测试**
+
+![A节点发送群聊消息](https://github.com/HelloDVA/ROS-2/blob/main/test2-1.png)
+
+![B节点接收](https://github.com/HelloDVA/ROS-2/blob/main/test2-2.png)
+
+**私发消息测试**
+
+![B节点发送私聊消息](https://github.com/HelloDVA/ROS-2/blob/main/test3-1.png)
+
+![A节点接收](https://github.com/HelloDVA/ROS-2/blob/main/test3-2.png)
+
+**节点退出测试**
+
+![A节点退出](https://github.com/HelloDVA/ROS-2/blob/main/test4-1.png)
+
+![B节点退出](https://github.com/HelloDVA/ROS-2/blob/main/test4-2.png)
+
+![服务节点清理失效节点](https://github.com/HelloDVA/ROS-2/blob/main/test4-3.png)
